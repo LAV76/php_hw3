@@ -1,6 +1,6 @@
 <?php
 
-// function readAllFunction(string $address) : string {
+// Function to read all data from the file
 function readAllFunction(array $config) : string {
     $address = $config['storage']['address'];
     
@@ -21,7 +21,7 @@ function readAllFunction(array $config) : string {
     }
 }
 
-// function addFunction(string $address) : string {
+// Function to add a new record to the file
 function addFunction(array $config) : string {
     $address = $config['storage']['address'];
 
@@ -41,7 +41,7 @@ function addFunction(array $config) : string {
     fclose($fileHandler);
 }
 
-// function clearFunction(string $address) : string {
+// Function to clear the contents of the file
 function clearFunction(array $config) : string {
     $address = $config['storage']['address'];
 
@@ -58,58 +58,65 @@ function clearFunction(array $config) : string {
     }
 }
 
-function helpFunction() {
-    return handleHelp();
-}
+// Function to search for birthdays in the file
+function searchBirthdays(array $config): string {
+    $address = $config['storage']['address'];
+    $today = date('d-m'); // Get today's day and month
 
-function readConfig(string $configAddress): array|false{
-    return parse_ini_file($configAddress, true);
-}
+    if (file_exists($address) && is_readable($address)) {
+        $file = fopen($address, "r");
+        $results = "Поздравления для:\n";
 
-function readProfilesDirectory(array $config): string {
-    $profilesDirectoryAddress = $config['profiles']['address'];
+        while (($line = fgets($file)) !== false) {
+            $parts = explode(", ", $line);
 
-    if(!is_dir($profilesDirectoryAddress)){
-        mkdir($profilesDirectoryAddress);
-    }
+            if (count($parts) > 1) {
+                $name = trim($parts[0]);
+                $date = trim($parts[1]);
+                $dateParts = explode('-', $date);
 
-    $files = scandir($profilesDirectoryAddress);
-
-    $result = "";
-
-    if(count($files) > 2){
-        foreach($files as $file){
-            if(in_array($file, ['.', '..']))
-                continue;
-            
-            $result .= $file . "\r\n";
+                if (count($dateParts) >= 2 && $dateParts[0] . '-' . $dateParts[1] === $today) {
+                    $results .= "$name\n";
+                }
+            }
         }
+
+        fclose($file);
+
+        return strlen($results) > 16 ? $results : "Сегодня нет именинников.";
     }
     else {
-        $result .= "Директория пуста \r\n";
+        return handleError("Файл не существует или недоступен для чтения.");
     }
-
-    return $result;
 }
 
-function readProfile(array $config): string {
-    $profilesDirectoryAddress = $config['profiles']['address'];
+// Function to delete a specific record
+function deleteRecord(array $config): string {
+    $address = $config['storage']['address'];
+    $criteria = readline("Введите имя или дату для удаления строки: ");
 
-    if(!isset($_SERVER['argv'][2])){
-        return handleError("Не указан файл профиля");
+    if (file_exists($address) && is_readable($address)) {
+        $file = file($address); // Read file into an array
+        $updatedFile = "";
+        $found = false;
+
+        foreach ($file as $line) {
+            if (stripos($line, $criteria) === false) {
+                $updatedFile .= $line;
+            } else {
+                $found = true;
+            }
+        }
+
+        file_put_contents($address, $updatedFile);
+
+        return $found ? "Строка удалена." : "Строка не найдена.";
+    } else {
+        return handleError("Файл не существует или недоступен для чтения.");
     }
+}
 
-    $profileFileName = $profilesDirectoryAddress . $_SERVER['argv'][2] . ".json";
-
-    if(!file_exists($profileFileName)){
-        return handleError("Файл $profileFileName не существует");
-    }
-
-    $contentJson = file_get_contents($profileFileName);
-    $contentArray = json_decode($contentJson, true);
-
-    $info = "Имя: " . $contentArray['name'] . "\r\n";
-    $info .= "Фамилия: " . $contentArray['lastname'] . "\r\n";
-
-    return $info;
+// Error handler
+function handleError(string $message): string {
+    return "Ошибка: $message";
 }
