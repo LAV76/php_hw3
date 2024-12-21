@@ -36,19 +36,40 @@ class __TwigTemplate_247c9c4e490c3bc96f40c9d312814378 extends Template
         // line 1
         echo "<!DOCTYPE html>
 <html>
-    <head>
-        <title>";
-        // line 4
+<link rel=\"stylesheet\" href=\"styles.css\">
+
+<head>
+    <title>";
+        // line 6
         echo twig_escape_filter($this->env, ($context["title"] ?? null), "html", null, true);
         echo "</title>
-    </head>
-    <body>
-        ";
-        // line 7
-        $this->loadTemplate(($context["content_template_name"] ?? null), "main.tpl", 7)->display($context);
-        // line 8
-        echo "    </body>
-</html>";
+</head>
+<body>
+    ";
+        // line 9
+        $this->loadTemplate("header.tpl", "main.tpl", 9)->display($context);
+        // line 10
+        echo "    <div class=\"main-content\">
+        <div class=\"content\">
+            ";
+        // line 12
+        $this->loadTemplate(($context["content_template_name"] ?? null), "main.tpl", 12)->display($context);
+        // line 13
+        echo "        </div>
+        <div class=\"sidebar\">
+            ";
+        // line 15
+        $this->loadTemplate("sidebar.tpl", "main.tpl", 15)->display($context);
+        // line 16
+        echo "        </div>
+    </div>
+    ";
+        // line 18
+        $this->loadTemplate("footer.tpl", "main.tpl", 18)->display($context);
+        // line 19
+        echo "</body>
+</html>
+";
     }
 
     public function getTemplateName()
@@ -63,7 +84,7 @@ class __TwigTemplate_247c9c4e490c3bc96f40c9d312814378 extends Template
 
     public function getDebugInfo()
     {
-        return array (  50 => 8,  48 => 7,  42 => 4,  37 => 1,);
+        return array (  70 => 19,  68 => 18,  64 => 16,  62 => 15,  58 => 13,  56 => 12,  52 => 10,  50 => 9,  44 => 6,  37 => 1,);
     }
 
     public function getSourceContext()
