@@ -8,6 +8,7 @@
 <body>
     {% include 'header.tpl' %}
     <div class="main-content">
+    <p>Текущее время: {{ "now"|date("H:i:s") }}</p>
         <div class="content">
             {% include content_template_name %}
         </div>

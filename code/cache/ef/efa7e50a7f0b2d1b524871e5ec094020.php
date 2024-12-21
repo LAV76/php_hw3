@@ -50,23 +50,27 @@ class __TwigTemplate_247c9c4e490c3bc96f40c9d312814378 extends Template
         $this->loadTemplate("header.tpl", "main.tpl", 9)->display($context);
         // line 10
         echo "    <div class=\"main-content\">
+    <p>Текущее время: ";
+        // line 11
+        echo twig_escape_filter($this->env, twig_date_format_filter($this->env, "now", "H:i:s"), "html", null, true);
+        echo "</p>
         <div class=\"content\">
             ";
-        // line 12
-        $this->loadTemplate(($context["content_template_name"] ?? null), "main.tpl", 12)->display($context);
         // line 13
+        $this->loadTemplate(($context["content_template_name"] ?? null), "main.tpl", 13)->display($context);
+        // line 14
         echo "        </div>
         <div class=\"sidebar\">
             ";
-        // line 15
-        $this->loadTemplate("sidebar.tpl", "main.tpl", 15)->display($context);
         // line 16
+        $this->loadTemplate("sidebar.tpl", "main.tpl", 16)->display($context);
+        // line 17
         echo "        </div>
     </div>
     ";
-        // line 18
-        $this->loadTemplate("footer.tpl", "main.tpl", 18)->display($context);
         // line 19
+        $this->loadTemplate("footer.tpl", "main.tpl", 19)->display($context);
+        // line 20
         echo "</body>
 </html>
 ";
@@ -84,7 +88,7 @@ class __TwigTemplate_247c9c4e490c3bc96f40c9d312814378 extends Template
 
     public function getDebugInfo()
     {
-        return array (  70 => 19,  68 => 18,  64 => 16,  62 => 15,  58 => 13,  56 => 12,  52 => 10,  50 => 9,  44 => 6,  37 => 1,);
+        return array (  74 => 20,  72 => 19,  68 => 17,  66 => 16,  62 => 14,  60 => 13,  55 => 11,  52 => 10,  50 => 9,  44 => 6,  37 => 1,);
     }
 
     public function getSourceContext()

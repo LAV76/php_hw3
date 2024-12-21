@@ -26,4 +26,10 @@ class Render {
  
         return $template->render($templateVariables);
     }
+
+    public function renderErrorPage(string $errorMessage) {
+        $template = $this->environment->load('error.tpl');
+        return $template->render(['error_message' => $errorMessage]);
+    }
+    
 }
